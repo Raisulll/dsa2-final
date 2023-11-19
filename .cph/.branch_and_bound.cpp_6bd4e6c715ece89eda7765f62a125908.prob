@@ -1,0 +1,1 @@
+{"name":"Local: branch_and_bound","url":"/home/raisul/Desktop/Codes/Academic/DSA-2/branch_and_bound.cpp","tests":[{"id":1698653305497,"input":"4\n4 400 10\n7 42 6\n5 25 5\n3 12 4","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/raisul/Desktop/Codes/Academic/DSA-2/branch_and_bound.cpp","group":"local","local":true}

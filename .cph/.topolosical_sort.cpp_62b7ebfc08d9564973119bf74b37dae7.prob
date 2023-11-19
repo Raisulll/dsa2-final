@@ -1,0 +1,1 @@
+{"name":"Local: topolosical_sort","url":"/home/raisul/Desktop/Codes/Academic/DSA-2/topolosical_sort.cpp","tests":[{"id":1699251624602,"input":"7\nA D\nD F\nD E\nB D\nB C\nC E\nC F","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/raisul/Desktop/Codes/Academic/DSA-2/topolosical_sort.cpp","group":"local","local":true}
