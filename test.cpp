@@ -1,56 +1,55 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define ll long long
-
-map<ll, vector<ll>> graph;
-vector<ll> colors;
-
-bool isSafe(ll node, ll c)
+ll n,c;
+map<ll,vector<ll>>mp;
+map<ll,ll>degree;
+void Topsort(vector<ll>&ans)
 {
-    for (auto it : graph[node])
+    bool flag=false;
+    for(ll i=0; i<n; ++i)
     {
-        if (colors[it] == c)
-            return false;
-    }
-    return true;
-}
-
-bool graphColoring(ll node, ll c)
-{
-    if (node == colors.size())
-    {
-        for (ll i = 0; i < colors.size(); ++i)
-            cout << colors[i] << " ";
-        cout << endl;
-        return true; // Return true to continue exploring all solutions
-    }
-    for (ll i = 1; i <= c; ++i)
-    {
-        if (isSafe(node, i))
+        if(!degree[i])
         {
-            colors[node] = i;
-            if (graphColoring(node + 1, c))
-                continue;;  // Return true to continue exploring all solutions
-            colors[node] = 0; // Backtrack
+            flag=true;
+            degree[i]=-1;
+            ans.push_back(i);
+            for(auto it:mp[i])
+            {
+                degree[it]--;
+            }
+            Topsort(ans);
+            degree[i]=0;
+            for(auto it:mp[i])
+            {
+                degree[it]++;
+            }
+            ans.pop_back();
         }
     }
-    return false;
+    if(!flag)
+    {
+        for(auto it:ans)
+        {
+            cout<<it<<" ";
+        }
+        cout<<endl;
+        c++;
+    }
 }
-
 int main()
 {
-    ll n, e;
-    cin >> n >> e;
-    ll u, v;
-    for (ll i = 0; i < e; i++)
+    cin>>n;
+    for(ll i=0; i<n; ++i)
     {
-        cin >> u >> v;
-        graph[u].push_back(v);
-        graph[v].push_back(u);
+        ll x,y; cin>>x>>y;
+        mp[x].push_back(y);
+        degree[y]++;
     }
-    ll c;
-    cin >> c;
-    colors.resize(n, 0);
-    graphColoring(0, c);
-    return 0;
+    vector<ll>ans;
+    Topsort(ans);
+    if(!c)
+    {
+        cout<<"No topological sort exists!!\n";
+    }
 }
