@@ -1,57 +1,76 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-map<int, vector<int>> mp;
-map<int, int> inD;
-vector<int> ans;
+int edges;
+map<string, vector<string>> adj;
+map<string, int> degree;
+set<string> nodes;
+vector<string> ans;
+int c = 0;
 
-void allTopSortUtil(vector<int>& res, bool visited[]) {
+void topo_sort(vector<string> &current)
+{
     bool flag = false;
-
-    for (auto it : mp) {
-        int i = it.first;
-        if (inD[i] == 0 && !visited[i]) {
-            for (auto j : mp[i])
-                inD[j]--;
-
-            res.push_back(i);
-            visited[i] = true;
-            allTopSortUtil(res, visited);
-
-            visited[i] = false;
-            res.erase(res.end() - 1);
-            for (auto j : mp[i])
-                inD[j]++;
-
+    // Traverse all the nodes and check if the degree is 0
+    for (string i : nodes)
+    {
+        if (degree[i] == 0)
+        {
             flag = true;
+            degree[i] = -1; // Mark the node as visited
+            current.push_back(i);
+
+            // Reduce the degree of connected nodes
+            for (string j : adj[i])
+            {
+                degree[j]--;
+            }
+
+            topo_sort(current);
+
+            // Backtrack
+            degree[i] = 0;
+            current.pop_back();
+            for (string j : adj[i])
+            {
+                degree[j]++;
+            }
         }
     }
 
-    if (!flag) {
-        for (int i = 0; i < res.size(); i++)
-            cout << res[i] << " ";
+    if (!flag)
+    {
+        // All nodes are visited, print the topological sort
+        for (auto i : current)
+        {
+            cout << i << " ";
+        }
         cout << endl;
+        c++;
     }
 }
 
-void allTopSort() {
-    bool *visited = new bool[mp.size()];
-    for (int i = 0; i < mp.size(); i++)
-        visited[i] = false;
-
-    vector<int> res;
-    allTopSortUtil(res, visited);
-}
-
-int main() {
+int main()
+{
     int n;
-    cin >> n;
-    for (int i = 0; i < n; ++i) {
-        int x, y;
-        cin >> x >> y;
-        mp[x].push_back(y);
-        inD[y]++;
+    cin >> edges;
+    for (int i = 0; i < edges; i++)
+    {
+        string u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        degree[v]++;
+        nodes.insert(u);
+        nodes.insert(v);
     }
-    allTopSort();
+
+    vector<string> current;
+    topo_sort(current);
+
+    if (c == 0)
+    {
+        cout << "No valid topological sorts." << endl;
+    }
+
     return 0;
 }
